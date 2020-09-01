@@ -75,7 +75,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     $email_err = "No account found with that email.";
                 }
             } else{
-                echo "Oops! Something went wrong. Please try again later.";
+                $err = "Oops! Something went wrong. Please try again later.";
             }
 
             // Close statement
@@ -124,14 +124,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 						Member Login
 					</span>
 
+                    <span><?php echo $err; ?></span>
 					<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
 						<input class="input100" type="text" name="email" placeholder="Email">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
                         </span>
-                        <span ><?php echo $email_err; ?></span>
 					</div>
+                    <?php if($email_err): ?>
+                        <span class="text-danger pl-3"><?php echo $email_err; ?></span>
+                    <?php endif ?>
 
 					<div class="wrap-input100 validate-input" data-validate = "Password is required">
 						<input class="input100" type="password" name="password" placeholder="Password">
@@ -139,8 +142,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 						<span class="symbol-input100">
 							<i class="fa fa-lock" aria-hidden="true"></i>
                         </span>
-                        <span ><?php echo $password_err; ?></span>
 					</div>
+                    <?php if($password_err): ?>
+                        <span class="text-danger pl-3"><?php echo $password_err; ?></span>
+                    <?php endif ?>
 					
 					<div class="container-login100-form-btn">
 						<button type="submit" class="login100-form-btn">

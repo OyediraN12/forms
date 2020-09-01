@@ -12,7 +12,7 @@ require_once "../database/db.php";
  
 // Define variables and initialize with empty values
 $email = $password = $confirm_password = "";
-$email_err = $password_err = $confirm_password_err = "";
+$err = $email_err = $password_err = $confirm_password_err = "";
  
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -42,7 +42,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     $email = trim($_POST["email"]);
                 }
             } else{
-                echo "Oops! Something went wrong. Please try again later.";
+                $err = "Oops! Something went wrong. Please try again later.";
             }
 
             // Close statement
@@ -88,7 +88,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 // Redirect to login page
                 header("location: login.php");
             } else{
-                echo "Something went wrong. Please try again later.";
+                $err =  "Something went wrong. Please try again later.";
             }
 
             // Close statement
@@ -136,24 +136,28 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 					<span class="login100-form-title">
 						Member Sign up
 					</span>
-
+                    <span><?php echo $err; ?></span>
 					<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-						<input class="input100" type="text" name="email" placeholder="Email">
+						<input class="input100" type="text" name="email" value="<?php echo $param_email; ?>" placeholder="Email">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
                         </span>
-                        <span ><?php echo $email_err; ?></span>
 					</div>
-
+                    <?php if($email_err): ?>
+                        <span class="text-danger pl-3"><?php echo $email_err; ?></span>
+                    <?php endif ?>
+                    
 					<div class="wrap-input100 validate-input" data-validate = "Password is required">
 						<input class="input100" type="password" name="password" placeholder="Password">
 						<span class="focus-input100"></span>
 						<span class="symbol-input100">
 							<i class="fa fa-lock" aria-hidden="true"></i>
                         </span>
-                        <span ><?php echo $password_err; ?></span>
                     </div>
+                    <?php if($password_err): ?>
+                        <span class="text-danger pl-3"><?php echo $password_err; ?></span>
+                    <?php endif ?>
                     
                     <div class="wrap-input100 validate-input" data-validate = "Confirm Password is required">
 						<input class="input100" type="password" name="confirm_password" placeholder="Confirm Password">
@@ -161,8 +165,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 						<span class="symbol-input100">
 							<i class="fa fa-lock" aria-hidden="true"></i>
                         </span>
-                        <span ><?php echo $confirm_password_err; ?></span>
 					</div>
+                    <?php if($confirm_password_err): ?>
+                        <span class="text-danger pl-3"><?php echo $confirm_password_err; ?></span>
+                    <?php endif ?>
 					
 					<div class="container-login100-form-btn">
 						<button type="submit" class="login100-form-btn">
