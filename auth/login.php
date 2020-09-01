@@ -68,6 +68,25 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         } else{
                             // Display an error message if password is not valid
                             $password_err = "The password you entered was not valid.";
+
+                            // Log into the database failed login attempt
+                            // Prepare an insert statement
+                            $sql = "INSERT INTO error_login_log (email, password) VALUES (?, ?)";
+                            
+                            if($stmt = $mysqli->prepare($sql)){
+                                // Bind variables to the prepared statement as parameters
+                                $stmt->bind_param("ss", $param_email, $param_password);
+                                
+                                // Set parameters
+                                $param_email = $email;
+                                $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
+                                
+                                // Attempt to execute the prepared statement
+                                if($stmt->execute()){
+                                } 
+                                // Close statement
+                                $stmt->close();
+                            }
                         }
                     }
                 } else{
